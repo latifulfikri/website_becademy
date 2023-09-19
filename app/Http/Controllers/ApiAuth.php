@@ -81,7 +81,7 @@ class ApiAuth extends Controller
         $validated = $validation->validated();
 
         $token = null;
-        if ($token = Auth::guard('api')->attempt($validated)) {
+        if ($token = Auth::guard('api')->attempt($validated) ) {
             return $this->createNewToken($token);
         } else {
             return (new ApiResponse)->response(
@@ -92,11 +92,10 @@ class ApiAuth extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $r)
     {
-        $token = Auth::getToken();
         try {
-            Auth::invalidate($token);
+            Auth::guard('api')->logout();
             return (new ApiResponse)->response(
                 'Logout',
                 null,

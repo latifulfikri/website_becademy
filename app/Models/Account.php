@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Account extends Authenticatable implements MustVerifyEmail
+class Account extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use HasFactory, HasUuids, Notifiable, HasApiTokens;
 
@@ -46,4 +47,8 @@ class Account extends Authenticatable implements MustVerifyEmail
         return $this->getKey();
     }
 
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

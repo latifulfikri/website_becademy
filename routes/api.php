@@ -22,3 +22,7 @@ Route::post('/login',[ApiAuth::class, 'login']);
 Route::get('/email/verify', [ApiVerification::class, 'notice'])->name('verification.notice');
 Route::get('/email/verify/{id}/resend', [ApiVerification::class, 'send'])->name('verification.send');
 Route::get('/email/verify/{id}/{hash}', [ApiVerification::class, 'verify'])->name('verification.verify');
+
+Route::middleware(['apiJWT'])->group(function(){
+    Route::get('logout',[ApiAuth::class, 'logout']);
+});
