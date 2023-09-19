@@ -15,8 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name',255);
             $table->string('email',255);
-            $table->string('picture',255);
             $table->string('password',255);
+            // 0 = member , 1 = admin , 2 = premium member
+            $table->tinyInteger('role')->default(0);
+            $table->string('picture',255);
             $table->string('gender',255);
             $table->string('school',255);
             $table->string('degree',255);

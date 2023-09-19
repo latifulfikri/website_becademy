@@ -6,6 +6,7 @@ use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ApiAuth extends Controller
@@ -41,9 +42,18 @@ class ApiAuth extends Controller
         $validated = $validation->validated();
         $validated['password'] = bcrypt($r->password);
 
-        $newAccount = Account::create($validated);
+        if ($path = $r->file('picture')->store('/',['disk' => 'account_picture'])) {
+            $validated['picture'] = $path;
+            $newAccount = Account::create($validated);
+            if (!$newAccount) {
+                Storage::disk('account_picture')->delete($path);
+                return (new ApiResponse)->response(
+                    'Internal server error',
+                    null,
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
 
-        if ($newAccount) {
             $newAccount->sendEmailVerificationNotification();
 
             return (new ApiResponse)->response(
@@ -55,7 +65,7 @@ class ApiAuth extends Controller
             );
         } else {
             return (new ApiResponse)->response(
-                'Internal server error',
+                'Cannot upload picture',
                 null,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );

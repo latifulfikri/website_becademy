@@ -56,6 +56,10 @@ return [
             'throw' => false,
         ],
 
+        'account_picture' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/account/img',
+        ],
     ],
 
     /*
