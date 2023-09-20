@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Member extends Model
 {
@@ -22,4 +23,14 @@ class Member extends Model
         'payment_method',
         'payment_picture'
     ];
+
+    public function Account(): HasOne
+    {
+        return $this->hasOne(Account::class);
+    }
+
+    public function Course(): HasOne
+    {
+        return $this->hasOne(Course::class);
+    }
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -61,5 +63,25 @@ class Account extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function Members(): HasMany
+    {
+        return $this->hasMany(Member::class);
+    }
+
+    public function Tutors(): HasMany
+    {
+        return $this->hasMany(Tutor::class);
+    }
+
+    public function Forums(): HasMany
+    {
+        return $this->hasMany(Forum::class);
+    }
+
+    public function ForumReplies(): HasMany
+    {
+        return $this->hasMany(ForumReply::class);
     }
 }
