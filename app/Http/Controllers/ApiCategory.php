@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category as ModelsCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-class Category extends Controller
+class ApiCategory extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $category = ModelsCategory::get();
+        $category = Category::get();
         return (new ApiResponse)->response(
             'Category data',
             $category,
@@ -45,7 +45,7 @@ class Category extends Controller
         $validated = $validation->validated();
 
         try {
-            $category = ModelsCategory::create($validated);
+            $category = Category::create($validated);
             return (new ApiResponse)->response(
                 'Created',
                 $category,
@@ -65,9 +65,9 @@ class Category extends Controller
      */
     public function show(string $id)
     {
-        $category = ModelsCategory::find($id);
+        $category = Category::find($id);
 
-        if(!$category) {
+        if($category == null) {
             return (new ApiResponse)->response(
                 'Category not found',
                 null,
@@ -87,9 +87,9 @@ class Category extends Controller
      */
     public function update(Request $r, string $id)
     {
-        $category = ModelsCategory::find($id);
+        $category = Category::find($id);
 
-        if(!$category) {
+        if($category == null) {
             return (new ApiResponse)->response(
                 'Category not found',
                 null,

@@ -16,8 +16,7 @@ class ApiVerification extends Controller
         return (new ApiResponse)->response(
             'Please verify your email or request another email verification',
             [
-                'url' => 'http://127.0.0.1:8000/email/verify',
-                'method' => 'get'
+                'resend_url' => url('/').'/email/verify/resend',
             ],
             Response::HTTP_OK
         );
@@ -43,9 +42,7 @@ class ApiVerification extends Controller
 
     public function send($id)
     {
-        $user = Account::findOrFail($id);
-
-        Auth::login($user);
+        $user = Account::find(Auth::guard('api')->user()->id);
 
         if ($user->hasVerifiedEmail()) {
             return (new ApiResponse)->response(
@@ -58,8 +55,6 @@ class ApiVerification extends Controller
         }
 
         $user->sendEmailVerificationNotification();
-
-        Auth::logout();
 
         return (new ApiResponse)->response(
             'Verification link has been sent to your email',

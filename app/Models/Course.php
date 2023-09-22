@@ -13,7 +13,7 @@ class Course extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'catagory_id',
+        'category_id',
         'name',
         'desc',
         'price',

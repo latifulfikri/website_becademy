@@ -19,9 +19,9 @@ return new class extends Migration
             $table->text('desc');
             $table->integer('price');
             $table->string('min_processor',255);
-            $table->string('min_storage',255);
-            $table->string('min_ram',255);
-            $table->tinyInteger('is_active');
+            $table->integer('min_storage')->default(64);
+            $table->tinyInteger('min_ram')->default(4);
+            $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
         });
     }
