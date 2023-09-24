@@ -24,6 +24,6 @@ class Module extends Model
 
     public function Course(): HasOne
     {
-        return $this->hasOne(Course::class);
+        return $this->hasOne(Course::class,'id','course_id');
     }
 }

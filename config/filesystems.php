@@ -60,6 +60,11 @@ return [
             'driver' => 'local',
             'root'   => public_path() . '/account/img',
         ],
+
+        'course_payment' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/course/payment',
+        ],
     ],
 
     /*

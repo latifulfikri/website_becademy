@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('payment_method',255);
             $table->string('payment_picture',255);
-            $table->tinyInteger('payment_verified');
+            $table->tinyInteger('payment_verified')->default(0);
             $table->timestamps();
         });
     }

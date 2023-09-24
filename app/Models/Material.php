@@ -20,6 +20,6 @@ class Material extends Model
 
     public function Module(): HasOne
     {
-        return $this->hasOne(Module::class);
+        return $this->hasOne(Module::class,'id','module_id');
     }
 }

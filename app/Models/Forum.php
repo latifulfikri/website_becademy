@@ -25,11 +25,11 @@ class Forum extends Model
 
     public function Account(): HasOne
     {
-        return $this->hasOne(Account::class);
+        return $this->hasOne(Account::class,'id','account_id');
     }
 
     public function Course(): HasOne
     {
-        return $this->hasOne(Course::class);
+        return $this->hasOne(Course::class,'id','course_id');
     }
 }

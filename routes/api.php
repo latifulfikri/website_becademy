@@ -39,5 +39,8 @@ Route::middleware(['apiJWT'])->group(function(){
         Route::put('/category/{id}/update',[Category::class, 'update']);
         Route::post('/course',[Course::class, 'store']);
         Route::put('/course/{id}/update',[Course::class, 'update']);
+        Route::put('/course/{id}/tutor/register',[Course::class, 'registerTutor']);
     });
+
+    Route::put('/course/{id}/member/register',[Course::class, 'registerMember']);
 });

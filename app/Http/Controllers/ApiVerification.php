@@ -40,7 +40,7 @@ class ApiVerification extends Controller
         return view('auth.verifiedEmail')->with(['email'=>$user->email]);
     }
 
-    public function send($id)
+    public function send()
     {
         $user = Account::find(Auth::guard('api')->user()->id);
 

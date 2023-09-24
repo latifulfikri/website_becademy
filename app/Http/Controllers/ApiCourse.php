@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Course;
+use App\Models\Member;
+use App\Models\Tutor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ApiCourse extends Controller
@@ -175,6 +180,151 @@ class ApiCourse extends Controller
         }
     }
 
+    public function registerMember(Request $r, string $id)
+    {
+        $account = Auth::guard('api')->user();
+
+        $course = Course::find($id);
+
+        if($course == null) {
+            return (new ApiResponse)->response(
+                'Course not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $validation = Validator::make($r->all(),[
+            'payment_method' => 'required|in:bank,ewallet,direct',
+            'payment_picture' => 'required|mimes:jpg,jpeg,png',
+        ]);
+
+        if($validation->fails())
+        {
+            return (new ApiResponse)->response(
+                'Not acceptable',
+                $validation->errors(),
+                Response::HTTP_NOT_ACCEPTABLE
+            );
+        }
+
+        $member = Member::where('account_id','=',$account->id)
+                    ->where('course_id','=',$id)
+                    ->first();
+        
+        if($member != null)
+        {
+            return (new ApiResponse)->response(
+                'Not acceptable',
+                [
+                    'status' => 'You already registered in this course',
+                    'data' => $member
+                ],
+                Response::HTTP_NOT_ACCEPTABLE
+            );
+        }
+
+        try {
+            if ($path = $r->file('payment_picture')->store('/',['disk' => 'course_payment'])) {
+                $newMember = Member::create([
+                    'account_id' => $account->id,
+                    'course_id' => $id,
+                    'payment_method' => $r->payment_method,
+                    'payment_picture' => $path,
+                ]);
+
+                if (!$newMember) {
+                    Storage::disk('course_payment')->delete($path);
+                    return (new ApiResponse)->response(
+                        'Internal server error',
+                        null,
+                        Response::HTTP_INTERNAL_SERVER_ERROR
+                    );
+                }
+    
+                return (new ApiResponse)->response(
+                    'Registered',
+                    [
+                        'status' => 'Please wait for 1x24 until your course is ready'
+                    ],
+                    Response::HTTP_CREATED
+                );
+            } else {
+                return (new ApiResponse)->response(
+                    'Cannot upload picture',
+                    null,
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+        } catch (\Throwable $th) {
+            return (new ApiResponse)->response(
+                'Internal server error',
+                $th,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    public function registerTutor(Request $r, string $id)
+    {
+        $course = Course::find($id);
+
+        if($course == null) {
+            return (new ApiResponse)->response(
+                'Course not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $validation = Validator::make($r->all(),[
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        if($validation->fails())
+        {
+            return (new ApiResponse)->response(
+                'Not acceptable',
+                $validation->errors(),
+                Response::HTTP_NOT_ACCEPTABLE
+            );
+        }
+
+        $tutor = Tutor::where('account_id','=',$r->account_id)
+                    ->where('course_id','=',$id)
+                    ->first();
+        
+        if($tutor != null)
+        {
+            return (new ApiResponse)->response(
+                'Not acceptable',
+                [
+                    'status' => 'That account has been registered in this course',
+                    'data' => $tutor
+                ],
+                Response::HTTP_NOT_ACCEPTABLE
+            );
+        }
+
+        try {
+            $newTutor = Tutor::create([
+                'account_id' => $r->account_id,
+                'course_id' => $id,
+            ]);
+
+            return (new ApiResponse)->response(
+                'Registered',
+                Tutor::with('Account','Course')->find($newTutor->id),
+                Response::HTTP_CREATED
+            );
+        } catch (\Throwable $th) {
+            return (new ApiResponse)->response(
+                'Internal server error',
+                $th,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */

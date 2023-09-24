@@ -19,11 +19,11 @@ class ForumReply extends Model
 
     public function Account(): HasOne
     {
-        return $this->hasOne(Account::class);
+        return $this->hasOne(Account::class,'id','account_id');
     }
 
     public function Forum(): HasOne
     {
-        return $this->hasOne(Forum::class);
+        return $this->hasOne(Forum::class,'id','forum_id');
     }
 }
