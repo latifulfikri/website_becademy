@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'apiJWT' => \App\Http\Middleware\ApiJWT::class,
         'apiAdmin' => \App\Http\Middleware\ApiAdmin::class,
         'apiVerified' => \App\Http\Middleware\ApiVerified::class,
+        'apiCourseAdmin' => \App\Http\Middleware\ApiCourseAdmin::class,
     ];
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiAuth;
 use App\Http\Controllers\ApiVerification;
 use App\Http\Controllers\ApiCategory as Category;
 use App\Http\Controllers\ApiCourse as Course;
+use App\Http\Controllers\ApiModule as Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
@@ -27,7 +28,9 @@ Route::get('/email/verify/{id}/{hash}', [ApiVerification::class, 'verify'])->nam
 Route::get('/category',[Category::class, 'index']);
 Route::get('/category/{id}',[Category::class, 'show']);
 Route::get('/course',[Course::class,'index']);
-Route::get('/course/{id}',[Course::class,'show']);
+Route::get('/course/{courseid}',[Course::class,'show']);
+Route::get('/course/{courseid}/module',[Module::class, 'index']);
+Route::get('/course/{courseid}/module/{moduleid}',[Module::class, 'show']);
 
 Route::middleware(['apiJWT'])->group(function(){
     Route::get('/email/verify', [ApiVerification::class, 'notice'])->name('verification.notice');
@@ -36,10 +39,15 @@ Route::middleware(['apiJWT'])->group(function(){
     
     Route::middleware(['apiVerified','apiAdmin'])->group(function(){
         Route::post('/category',[Category::class, 'store']);
-        Route::put('/category/{id}/update',[Category::class, 'update']);
+        Route::put('/category/{category}/update',[Category::class, 'update']);
         Route::post('/course',[Course::class, 'store']);
-        Route::put('/course/{id}/update',[Course::class, 'update']);
-        Route::put('/course/{id}/tutor/register',[Course::class, 'registerTutor']);
+        Route::put('/course/{courseid}/tutor/register',[Course::class, 'registerTutor']);
+    });
+
+    Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
+        Route::put('/course/{courseid}/update',[Course::class, 'update']);
+        Route::post('/course/{courseid}/module',[Module::class, 'store']);
+        Route::put('/course/{courseid}/module/{moduleid}',[Module::class, 'update']);
     });
 
     Route::put('/course/{id}/member/register',[Course::class, 'registerMember']);
