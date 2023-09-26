@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiVerification;
 use App\Http\Controllers\ApiCategory as Category;
 use App\Http\Controllers\ApiCourse as Course;
 use App\Http\Controllers\ApiModule as Module;
+use App\Http\Controllers\ApiMaterial as Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
@@ -37,18 +38,25 @@ Route::middleware(['apiJWT'])->group(function(){
     Route::get('/email/verify/resend', [ApiVerification::class, 'send'])->name('verification.send');
     Route::get('logout',[ApiAuth::class, 'logout']);
     
-    Route::middleware(['apiVerified','apiAdmin'])->group(function(){
-        Route::post('/category',[Category::class, 'store']);
-        Route::put('/category/{category}/update',[Category::class, 'update']);
-        Route::post('/course',[Course::class, 'store']);
-        Route::put('/course/{courseid}/tutor/register',[Course::class, 'registerTutor']);
-    });
+    Route::middleware(['apiVerified'])->group(function(){
+        Route::middleware(['apiAdmin'])->group(function(){
+            Route::post('/category',[Category::class, 'store']);
+            Route::put('/category/{category}/update',[Category::class, 'update']);
+            Route::post('/course',[Course::class, 'store']);
+            Route::put('/course/{courseid}/tutor/register',[Course::class, 'registerTutor']);
+        });
 
-    Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
-        Route::put('/course/{courseid}/update',[Course::class, 'update']);
-        Route::post('/course/{courseid}/module',[Module::class, 'store']);
-        Route::put('/course/{courseid}/module/{moduleid}',[Module::class, 'update']);
-    });
+        Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
+            Route::put('/course/{courseid}/update',[Course::class, 'update']);
+            Route::post('/course/{courseid}/module',[Module::class, 'store']);
+            Route::put('/course/{courseid}/module/{moduleid}',[Module::class, 'update']);
+        });
 
-    Route::put('/course/{id}/member/register',[Course::class, 'registerMember']);
+        Route::middleware(['apiVerified','apiCourseMember'])->group(function(){
+            Route::get('/course/{courseid}/module/{moduleid}/material',[Material::class, 'index']);
+            Route::get('/course/{courseid}/module/{moduleid}/material/{materialid}',[Material::class, 'show']);
+        });
+
+        Route::put('/course/{id}/member/register',[Course::class, 'registerMember']);
+    });
 });

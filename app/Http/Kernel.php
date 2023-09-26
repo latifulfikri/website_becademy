@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'apiAdmin' => \App\Http\Middleware\ApiAdmin::class,
         'apiVerified' => \App\Http\Middleware\ApiVerified::class,
         'apiCourseAdmin' => \App\Http\Middleware\ApiCourseAdmin::class,
+        'apiCourseMember' => \App\Http\Middleware\ApiCourseMember::class,
     ];
 }

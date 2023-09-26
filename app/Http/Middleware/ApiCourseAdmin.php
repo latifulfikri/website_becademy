@@ -31,11 +31,7 @@ class ApiCourseAdmin
             return response()->json([
                 'status' => 403,
                 'message' => 'User not in course admin',
-                'data' => [
-                    'courseid' => $request->route()->parameter('courseid'),
-                    'account_id' => $user->id
-                ]
-                // 'data' => 'Please use admin credential or contact developer'
+                'data' => 'Please use admin credential or contact developer'
             ], 403);
         }
 

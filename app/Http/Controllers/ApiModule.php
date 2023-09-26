@@ -15,9 +15,7 @@ class ApiModule extends Controller
      */
     public function index(string $courseid)
     {
-        $modules = Module::with(['Materials' => function($query) {
-            $query->select('name');
-        }])->where('course_id','=',$courseid)->get();
+        $modules = Module::with(['Materials:id,name,module_id'])->where('course_id','=',$courseid)->get();
 
         return (new ApiResponse)->response(
             'Modules data',
@@ -69,9 +67,7 @@ class ApiModule extends Controller
      */
     public function show(request $r)
     {
-        $module = Module::with(['Materials' => function($query) {
-            $query->select('name');
-        }])->find($r->route('moduleid'));
+        $module = Module::with(['Materials:id,name,module_id'])->find($r->route('moduleid'));
 
         if($module == null) {
             return (new ApiResponse)->response(

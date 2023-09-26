@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Member extends Model
 {
@@ -20,9 +21,15 @@ class Member extends Model
     ];
 
     protected $hidden = [
-        'payment_method',
         'payment_picture'
     ];
+
+    protected function paymentVerified(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) => ["Process","Success","Fail"][$value]
+        );
+    }
 
     public function Account(): HasOne
     {
