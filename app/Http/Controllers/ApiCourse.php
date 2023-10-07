@@ -211,7 +211,7 @@ class ApiCourse extends Controller
         $member = Member::where('account_id','=',$account->id)
                     ->where('course_id','=',$id)
                     ->first();
-        
+
         if($member != null)
         {
             return (new ApiResponse)->response(
@@ -241,7 +241,7 @@ class ApiCourse extends Controller
                         Response::HTTP_INTERNAL_SERVER_ERROR
                     );
                 }
-    
+
                 return (new ApiResponse)->response(
                     'Registered',
                     [
@@ -293,7 +293,7 @@ class ApiCourse extends Controller
         $tutor = Tutor::where('account_id','=',$r->account_id)
                     ->where('course_id','=',$id)
                     ->first();
-        
+
         if($tutor != null)
         {
             return (new ApiResponse)->response(
