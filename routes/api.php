@@ -21,10 +21,7 @@ use Illuminate\Support\Facades\Response;
 |
 */
 
-Route::post('/register',[ApiAuth::class, 'register']);
 Route::post('/login',[ApiAuth::class, 'login']);
-
-Route::get('/email/verify/{id}/{hash}', [ApiVerification::class, 'verify'])->name('verification.verify');
 
 Route::get('/category',[Category::class, 'index']);
 Route::get('/category/{id}',[Category::class, 'show']);
@@ -34,8 +31,6 @@ Route::get('/course/{courseid}/module',[Module::class, 'index']);
 Route::get('/course/{courseid}/module/{moduleid}',[Module::class, 'show']);
 
 Route::middleware(['apiJWT'])->group(function(){
-    Route::get('/email/verify', [ApiVerification::class, 'notice'])->name('verification.notice');
-    Route::get('/email/verify/resend', [ApiVerification::class, 'send'])->name('verification.send');
     Route::get('logout',[ApiAuth::class, 'logout']);
     
     Route::middleware(['apiVerified'])->group(function(){

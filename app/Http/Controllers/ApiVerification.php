@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Verified;
@@ -11,58 +10,61 @@ use Illuminate\Support\Facades\Auth;
 
 class ApiVerification extends Controller
 {
-    public function notice()
+    public function notice(Request $r)
     {
-        return (new ApiResponse)->response(
-            'Please verify your email or request another email verification',
-            [
-                'resend_url' => url('/').'/email/verify/resend',
-            ],
-            Response::HTTP_OK
-        );
+        if ($r->is('api/*')) {
+            return (new ApiResponse)->response(
+                'Please verify your email or request another email verification',
+                [
+                    'resend_url' => url('/').'/email/verify/resend',
+                ],
+                Response::HTTP_OK
+            );
+        } else {
+            return view('auth.verificationNotFound', ['email' => Auth::user()->email]);
+        }
     }
 
-    public function verify(EmailVerificationRequest $r)
+    public function verify($id, $hash)
     {
-        $user = Account::findOrFail($r->route('id'));
-
-        Auth::login($user);
+        Auth::loginUsingId($id);
+        $user = Account::find($id);
+    
+        if (! hash_equals($hash,
+            sha1($user->password))) {
+            return view('auth.verificationFail');
+        }
 
         if ($user->hasVerifiedEmail()) {
             return view('auth.verifiedEmail')->with(['email'=>$user->email]);
         }
-
+    
         $user->markEmailAsVerified();
         event(new Verified($user));
-
+    
         Auth::logout();
-
+    
         return view('auth.verifiedEmail')->with(['email'=>$user->email]);
     }
 
-    public function send()
+    public function send(Request $r)
     {
-        $user = Account::find(Auth::guard('api')->user()->id);
+        $id = null;
+        if ($r->is('api/*')) {
+            $id = Auth::guard('api')->user()->id;
+        } else {
+            $id = Auth::user()->id;
+        }
+        
+        $user = Account::find($id);
 
         if ($user->hasVerifiedEmail()) {
-            return (new ApiResponse)->response(
-                'Your email has ben verified',
-                [
-                    'email' => $user->email
-                ],
-                Response::HTTP_NOT_ACCEPTABLE
-            );
+            return view('auth.verifiedEmail',['email'=>$user->email]);
         }
 
         $user->sendEmailVerificationNotification();
 
-        return (new ApiResponse)->response(
-            'Verification link has been sent to your email',
-            [
-                'email' => $user->email
-            ],
-            Response::HTTP_ACCEPTED
-        );
+        return view('auth.verificationSent',['email'=>$user->email]);
     }
 
 }

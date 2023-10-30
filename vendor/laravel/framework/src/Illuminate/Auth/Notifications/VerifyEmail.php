@@ -2,6 +2,7 @@
 
 namespace Illuminate\Auth\Notifications;
 
+use App\Models\Account;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
@@ -80,12 +81,15 @@ class VerifyEmail extends Notification
             return call_user_func(static::$createUrlCallback, $notifiable);
         }
 
+        $account = Account::find($notifiable->getKey());
+
         return URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
             [
                 'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
+                'hash' => sha1($account->password),
+                // 'hash' => sha1($notifiable->getEmailForVerification()),
             ]
         );
     }
