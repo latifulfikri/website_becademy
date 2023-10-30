@@ -124,8 +124,7 @@ class ApiAuth extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 360,
+            'token_type' => 'Bearer'
         ]);
     }
 

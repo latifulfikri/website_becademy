@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->char('module_id',36);
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('name',255);
+            $table->string('name',200);
+            $table->string('slug',255)->unique();
             $table->string('video',255);
             $table->text('body');
             $table->timestamps();
