@@ -13,9 +13,18 @@ class ApiModule extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $courseid)
+    public function index(request $r)
     {
-        $modules = Module::with(['Materials:id,name,module_id'])->where('course_id','=',$courseid)->get();
+        $course = Course::where("slug", $r->route('courseSlug'))->first();
+        if (!$course) {
+            return (new ApiResponse)->response(
+                'Course not found',
+                [],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $modules = Module::with(['Materials:id,slug,name,module_id'])->where('course_id','=',$course->id)->get();
 
         return (new ApiResponse)->response(
             'Modules data',
@@ -29,7 +38,17 @@ class ApiModule extends Controller
      */
     public function store(Request $r)
     {
-        $r->merge(['course_id' => $r->route('courseid')]);
+        $course = Course::where("slug", $r->route('courseSlug'))->first();
+        if (!$course) {
+            return (new ApiResponse)->response(
+                'Course not found',
+                [],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $r->merge(['course_id' => $course->id]);
+
         $validation = Validator::make($r->all(),[
             'course_id' => 'required|exists:courses,id',
             'name' => 'required',
@@ -67,7 +86,7 @@ class ApiModule extends Controller
      */
     public function show(request $r)
     {
-        $module = Module::with(['Materials:id,name,module_id'])->find($r->route('moduleid'));
+        $module = Module::with(['Materials:id,name,module_id'])->where('slug',$r->route('moduleSlug'))->first();
 
         if($module == null) {
             return (new ApiResponse)->response(
@@ -89,7 +108,7 @@ class ApiModule extends Controller
      */
     public function update(Request $r)
     {
-        $module = Module::with('Course')->find($r->route('moduleid'));
+        $module = Module::with('Course')->where('slug',$r->route('moduleSlug'))->first();
 
         if($module == null) {
             return (new ApiResponse)->response(

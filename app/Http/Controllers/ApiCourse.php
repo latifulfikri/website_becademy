@@ -73,9 +73,9 @@ class ApiCourse extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $r)
     {
-        $course = Course::with('Tutors','Members','Modules')->find($id);
+        $course = Course::with('Tutors','Members','Modules')->where('slug','=',$r->route('courseSlug'))->first();
 
         if($course == null) {
             return (new ApiResponse)->response(
@@ -95,9 +95,9 @@ class ApiCourse extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $r, string $id)
+    public function update(Request $r)
     {
-        $course = Course::find($id);
+        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
 
         if($course == null) {
             return (new ApiResponse)->response(
@@ -184,7 +184,7 @@ class ApiCourse extends Controller
     {
         $account = Auth::guard('api')->user();
 
-        $course = Course::find($id);
+        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
 
         if($course == null) {
             return (new ApiResponse)->response(
@@ -267,7 +267,7 @@ class ApiCourse extends Controller
 
     public function registerTutor(Request $r, string $id)
     {
-        $course = Course::find($id);
+        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
 
         if($course == null) {
             return (new ApiResponse)->response(

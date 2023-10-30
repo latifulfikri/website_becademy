@@ -63,9 +63,9 @@ class ApiCategory extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $r)
     {
-        $category = Category::find($id);
+        $category = Category::where('slug','=',$r->route('categorySlug'))->first();
 
         if($category == null) {
             return (new ApiResponse)->response(
@@ -85,9 +85,9 @@ class ApiCategory extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $r, string $id)
+    public function update(Request $r)
     {
-        $category = Category::find($id);
+        $category = Category::where('slug','=',$r->route('categorySlug'))->first();
 
         if($category == null) {
             return (new ApiResponse)->response(
@@ -133,7 +133,7 @@ class ApiCategory extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $r)
     {
         //
     }
