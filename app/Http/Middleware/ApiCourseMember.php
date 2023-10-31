@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Course;
 use App\Models\Member;
 use App\Models\Tutor;
 use Closure;
@@ -31,7 +32,9 @@ class ApiCourseMember
             return $next($request);
         }
 
-        $member = Member::where('course_id','=',$request->route('courseid'))
+        $course = Course::where('slug',$request->route('courseSlug'))->first();
+
+        $member = Member::where('course_id','=',$course->id)
                     ->where('account_id','=',$user->id)->get()->last();
 
         if($member == null || $member == [])

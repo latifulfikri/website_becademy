@@ -19,7 +19,7 @@ class ApiCourse extends Controller
      */
     public function index()
     {
-        $courses = Course::with('Tutors','Members','Modules')->get();
+        $courses = Course::with('Tutors','Members','Modules', 'Category')->get();
 
         return (new ApiResponse)->response(
             'Courses data',
@@ -75,7 +75,7 @@ class ApiCourse extends Controller
      */
     public function show(Request $r)
     {
-        $course = Course::with('Tutors','Members','Modules')->where('slug','=',$r->route('courseSlug'))->first();
+        $course = Course::with('Tutors','Members','Modules','Category')->where('slug','=',$r->route('courseSlug'))->first();
 
         if($course == null) {
             return (new ApiResponse)->response(
