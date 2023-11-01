@@ -43,6 +43,7 @@ Route::middleware(['apiJWT'])->group(function(){
 
             Route::get('/member',[Member::class,'index']);
             Route::get('/member/{id}/detail',[Member::class,'show']);
+            Route::put('/member/{id}/verify-payment',[Member::class, 'verifyPayment']);
         });
 
         Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
