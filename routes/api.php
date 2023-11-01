@@ -58,5 +58,6 @@ Route::middleware(['apiJWT'])->group(function(){
         });
 
         Route::put('/course/{id}/member/register',[Course::class, 'registerMember']);
+        Route::get('/course/{courseSlug}/is-member', [Course::class, 'isMember']);
     });
 });
