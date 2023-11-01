@@ -50,7 +50,7 @@ class ApiCourseMember
             return response()->json([
                 'status' => 403,
                 'message' => 'User not in course member',
-                'data' => 'Please use member credential or contact admin'
+                'data' => 'Please register as a member in course'
             ], 403);
         }
 
