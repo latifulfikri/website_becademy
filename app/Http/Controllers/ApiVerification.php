@@ -53,6 +53,9 @@ class ApiVerification extends Controller
         if ($r->is('api/*')) {
             $id = Auth::guard('api')->user()->id;
         } else {
+            if(Auth::user() == null) {
+                return redirect('/login');
+            }
             $id = Auth::user()->id;
         }
         

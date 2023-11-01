@@ -28,9 +28,9 @@ class AuthController extends Controller
         $validated = $validation->validated();
 
         if (Auth::attempt($validated)) {
-            return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect('/');
         } else {
-            return redirect::back()->with(['error'=>'Something went wrong!<br>Please try again']);
+            return redirect('/login')->with(['error'=>'Wrong credential']);
         }
     }
 
@@ -67,23 +67,23 @@ class AuthController extends Controller
             $newAccount = Account::create($validated);
             if (!$newAccount) {
                 Storage::disk('account_picture')->delete($path);
-                return redirect()->back()->with(['error'=> 'Internal server error']);
+                return redirect('/register')->with(['error'=> 'Internal server error']);
             }
             Auth::attempt([
-                'email'=> $newAccount->email,
-                'password'=> $newAccount->password,
+                'email'=> $validated['email'],
+                'password'=> $validated['password'],
             ]);
             $newAccount->sendEmailVerificationNotification();
             return view('auth.verificationSent',['email'=>$newAccount->email]);
         } else {
-            return redirect()->back()->with(['error'=> 'Cannot upload picture']);
+            return redirect('/register')->with(['error'=> 'Cannot upload picture']);
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 
     public function check()

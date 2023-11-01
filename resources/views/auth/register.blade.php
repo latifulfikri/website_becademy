@@ -51,7 +51,12 @@
                                 </div>
                                 <div class="mb-2">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" placeholder="yours@email.com" required value="{{ old('email') }}">
+                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="yours@email.com" required value="{{ old('email') }}">
+                                    @error('email')
+                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col mb-2">
@@ -71,7 +76,7 @@
                                 <div class="mb-2">
                                     <label for="gender">Gender</label>
                                     <select class="form-select @error('gender') is-invalid @enderror" aria-label="Default select example" name="gender" id="gender" required>
-                                        <option @if (old('gender') == null) selected @endif >Open this select menu</option>
+                                        <option @if (old('gender') == "") selected @endif value="" >Open this select menu</option>
                                         <option @if (old('gender') == 'Male') selected @endif value="Male">Male</option>
                                         <option @if (old('gender') == 'Female') selected @endif value="Female">Female</option>
                                     </select>
@@ -93,9 +98,9 @@
                                 <div class="mb-2">
                                     <label for="degree">Degree</label>
                                     <select class="form-select @error('degree') is-invalid @enderror" aria-label="Default select example" name="degree" id="degree" required>
-                                        <option>Open this select menu</option>
+                                        <option @if (old('degree') == '') selected @endif value="">Open this select menu</option>
                                         <option @if (old('degree') == 'S1') selected @endif value="S1">S1/Undergraduate</option>
-                                        <option @if (old('degree') == 'S2') selected @endif value="S2">S2/Graduated</option>
+                                        <option @if (old('degree') == 'S2') selected @endif value="S2">S2/Postgraduate</option>
                                         <option @if (old('degree') == 'S3') selected @endif value="S3">S3/Phd</option>
                                     </select>
                                     @error('degree')
