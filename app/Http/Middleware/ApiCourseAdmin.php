@@ -25,6 +25,14 @@ class ApiCourseAdmin
         }
 
         $course = Course::where('slug',$request->route('courseSlug'))->first();
+        
+        if($course == null) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Course not found',
+                'data' => ''
+            ], 403);
+        }
 
         $tutor = Tutor::where('course_id','=',$course->id)
                     ->where('account_id','=',$user->id)->get();
