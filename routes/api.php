@@ -41,7 +41,8 @@ Route::middleware(['apiJWT'])->group(function(){
             Route::post('/course',[Course::class, 'store']);
             Route::put('/course/{courseSlug}/tutor/register',[Course::class, 'registerTutor']);
 
-            Route::get('/members',[Member::class,'index']);
+            Route::get('/member',[Member::class,'index']);
+            Route::get('/member/{id}/detail',[Member::class,'show']);
         });
 
         Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){

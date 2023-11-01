@@ -17,4 +17,22 @@ class ApiMember extends Controller
             Response::HTTP_OK
         );
     }
+
+    public function show(Request $request, $id){
+        $member = Member::with('Course')->find($id);
+
+        if($member == null){
+            return (new ApiResponse)->response(
+                'Member not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return (new ApiResponse)->response(
+            'Member data',
+            $member,
+            Response::HTTP_OK
+        );
+    }
 }
