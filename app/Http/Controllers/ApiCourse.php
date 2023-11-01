@@ -28,6 +28,47 @@ class ApiCourse extends Controller
         );
     }
 
+    public function myCourse(Request $request) {
+        $account = Auth::guard('api')->user();
+
+        $myCourses = Member::with('Course')->where('account_id', $account->id)->get();
+
+        return (new ApiResponse)->response(
+            'Courses data',
+            $myCourses,
+            Response::HTTP_OK
+        );
+    }
+
+    public function IsMember(Request $request){
+        $user = Auth::guard('api')->user();
+        $course = Course::where('slug','=',$request->route('courseSlug'))->first();
+
+        if($course == null) {
+            return (new ApiResponse)->response(
+                'Course not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $isMember = Member::where('account_id', $user->id)->where('course_id', $course->id)->exists();
+
+        if($isMember) {
+            return (new ApiResponse)->response(
+                'True',
+                ['result' => true],
+                Response::HTTP_OK
+            );
+        }else{
+            return (new ApiResponse)->response(
+                'False',
+                ['result' => false],
+                Response::HTTP_OK
+            );
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */

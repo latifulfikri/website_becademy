@@ -37,7 +37,7 @@ Route::middleware(['apiJWT'])->group(function(){
     Route::get('/email/verify', [ApiVerification::class, 'notice'])->name('verification.notice');
     Route::get('/email/verify/resend', [ApiVerification::class, 'send'])->name('verification.send');
     Route::get('logout',[ApiAuth::class, 'logout']);
-    
+
     Route::middleware(['apiVerified'])->group(function(){
         Route::middleware(['apiAdmin'])->group(function(){
             Route::post('/category',[Category::class, 'store']);
