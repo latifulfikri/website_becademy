@@ -53,6 +53,7 @@ Route::middleware(['apiJWT'])->group(function(){
         });
 
         Route::put('/course/{courseSlug}/member/register',[Course::class, 'registerMember']);
+        Route::put('/course/{courseSlug}/is-member',[Course::class, 'isMember']);
 
         Route::group(['prefix'=> '/my'], function(){
             Route::get('/course',[Course::class,'myCourse']);
