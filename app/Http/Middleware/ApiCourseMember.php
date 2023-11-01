@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Course;
 use App\Models\Member;
 use App\Models\Tutor;
 use Closure;
@@ -31,7 +32,17 @@ class ApiCourseMember
             return $next($request);
         }
 
-        $member = Member::where('course_id','=',$request->route('courseid'))
+        $course = Course::where('slug',$request->route('courseSlug'))->first();
+
+        if($course == null) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Course not found',
+                'data' => ''
+            ], 403);
+        }
+
+        $member = Member::where('course_id','=',$course->id)
                     ->where('account_id','=',$user->id)->get()->last();
 
         if($member == null || $member == [])
@@ -39,7 +50,7 @@ class ApiCourseMember
             return response()->json([
                 'status' => 403,
                 'message' => 'User not in course member',
-                'data' => 'Please use member credential or contact admin'
+                'data' => 'Please register as a member in course'
             ], 403);
         }
 

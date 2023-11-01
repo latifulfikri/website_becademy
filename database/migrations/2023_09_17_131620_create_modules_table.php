@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->char('course_id',36);
             $table->foreign('course_id')->references('id')->on('courses')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('name',255);
+            $table->string('name',200);
+            $table->string('slug',255)->unique();
             $table->timestamps();
         });
     }

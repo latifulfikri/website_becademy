@@ -15,7 +15,16 @@ class ApiMaterial extends Controller
      */
     public function index(request $r)
     {
-        $material = Module::with('Materials')->find($r->route('moduleid'));
+        $module = Module::where('slug',$r->route('moduleSlug'))->first();
+        if($module == null) {
+            return (new ApiResponse)->response(
+                'Module not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $material = Module::with('Materials')->find($module->id);
 
         if($material == null) {
             return (new ApiResponse)->response(
@@ -37,7 +46,16 @@ class ApiMaterial extends Controller
      */
     public function store(Request $r)
     {
-        $r->merge(['module_id' => $r->route('moduleid')]);
+        $module = Module::where('slug',$r->route('moduleSlug'))->first();
+        if($module == null) {
+            return (new ApiResponse)->response(
+                'Module not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $r->merge(['module_id' => $module->id]);
 
         $validation = Validator::make($r->all(),[
             'module_id' => 'required|exists:modules,id',
@@ -100,7 +118,16 @@ class ApiMaterial extends Controller
      */
     public function update(Request $r)
     {
-        $material = Material::with('Module')->find($r->route('materialid'));
+        $module = Module::where('slug',$r->route('moduleSlug'))->first();
+        if($module == null) {
+            return (new ApiResponse)->response(
+                'Module not found',
+                null,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $material = Material::with('Module')->find($module->id);
 
         if($material == null) {
             return (new ApiResponse)->response(
@@ -124,11 +151,6 @@ class ApiMaterial extends Controller
         }
 
         $validated = [];
-
-        if($r->module_id != null)
-        {
-            $validated['module_id'] = $r->module_id;
-        }
 
         if($r->name != null)
         {

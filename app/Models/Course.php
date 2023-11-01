@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Services\SlugService;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,11 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Course extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Sluggable;
 
     protected $fillable = [
         'category_id',
         'name',
+        'slug',
         'desc',
         'price',
         'min_processor',
@@ -46,5 +49,22 @@ class Course extends Model
     public function Category(): HasOne
     {
         return $this->hasOne(Category::class,'id','category_id');
+    }
+
+    public function Sluggable(): array {
+        return [
+            'slug'=> [
+                'source' => 'name'
+            ],
+        ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($course) {
+            $course->slug = SlugService::createSlug($course, 'slug', $course->name);
+        });
     }
 }

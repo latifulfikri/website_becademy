@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->char('category_id',36);
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('name',255);
+            $table->string('name',200);
+            $table->string('slug',255)->unique();
             $table->text('desc');
             $table->integer('price');
             $table->string('min_processor',255);

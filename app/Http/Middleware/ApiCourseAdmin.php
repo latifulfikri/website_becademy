@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Course;
 use App\Models\Tutor;
 use Closure;
 use Illuminate\Http\Request;
@@ -23,7 +24,17 @@ class ApiCourseAdmin
             return $next($request);
         }
 
-        $tutor = Tutor::where('course_id','=',$request->route()->parameter('courseid'))
+        $course = Course::where('slug',$request->route('courseSlug'))->first();
+        
+        if($course == null) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Course not found',
+                'data' => ''
+            ], 403);
+        }
+
+        $tutor = Tutor::where('course_id','=',$course->id)
                     ->where('account_id','=',$user->id)->get();
 
         if($tutor->count() <= 0)

@@ -124,8 +124,7 @@ class ApiAuth extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 360,
+            'token_type' => 'Bearer'
         ]);
     }
 
@@ -135,6 +134,16 @@ class ApiAuth extends Controller
             'User not authorized',
             null,
             Response::HTTP_FORBIDDEN
+        );
+    }
+
+    public function userLoginData(Request $r) {
+        $account = Auth::guard('api')->user();
+
+        return (new ApiResponse)->response(
+            'User login data',
+            $account,
+            Response::HTTP_OK
         );
     }
 }
