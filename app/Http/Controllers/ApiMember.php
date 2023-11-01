@@ -18,7 +18,7 @@ class ApiMember extends Controller
         );
     }
 
-    public function show(Request $request, $id){
+    public function show(Request $request, string $id){
         $member = Member::with('Course')->find($id);
 
         if($member == null){
