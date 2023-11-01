@@ -62,8 +62,8 @@ class ApiMember extends Controller
         }
 
         $validated = [];
-        if($request->payment_method != null){
-            $validated['payment_method'] = $request->payment_method;
+        if($request->payment_verified != null){
+            $validated['payment_verified'] = $request->payment_verified;
         }
 
         try {
