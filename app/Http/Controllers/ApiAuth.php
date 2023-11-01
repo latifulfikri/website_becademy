@@ -136,4 +136,14 @@ class ApiAuth extends Controller
             Response::HTTP_FORBIDDEN
         );
     }
+
+    public function userLoginData(Request $r) {
+        $account = Auth::guard('api')->user();
+
+        return (new ApiResponse)->response(
+            'User login data',
+            $account,
+            Response::HTTP_OK
+        );
+    }
 }

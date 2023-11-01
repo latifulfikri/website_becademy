@@ -28,6 +28,18 @@ class ApiCourse extends Controller
         );
     }
 
+    public function myCourse(Request $request) {
+        $account = Auth::guard('api')->user();
+
+        $myCourses = Member::with('Course')->where('account_id', $account->id)->get();
+
+        return (new ApiResponse)->response(
+            'Courses data',
+            $myCourses,
+            Response::HTTP_OK
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -180,7 +192,7 @@ class ApiCourse extends Controller
         }
     }
 
-    public function registerMember(Request $r, string $id)
+    public function registerMember(Request $r)
     {
         $account = Auth::guard('api')->user();
 
@@ -209,7 +221,7 @@ class ApiCourse extends Controller
         }
 
         $member = Member::where('account_id','=',$account->id)
-                    ->where('course_id','=',$id)
+                    ->where('course_id','=',$course->id)
                     ->first();
 
         if($member != null)
@@ -228,7 +240,7 @@ class ApiCourse extends Controller
             if ($path = $r->file('payment_picture')->store('/',['disk' => 'course_payment'])) {
                 $newMember = Member::create([
                     'account_id' => $account->id,
-                    'course_id' => $id,
+                    'course_id' => $course->id,
                     'payment_method' => $r->payment_method,
                     'payment_picture' => $path,
                 ]);
@@ -265,7 +277,7 @@ class ApiCourse extends Controller
         }
     }
 
-    public function registerTutor(Request $r, string $id)
+    public function registerTutor(Request $r)
     {
         $course = Course::where('slug','=',$r->route('courseSlug'))->first();
 
@@ -291,7 +303,7 @@ class ApiCourse extends Controller
         }
 
         $tutor = Tutor::where('account_id','=',$r->account_id)
-                    ->where('course_id','=',$id)
+                    ->where('course_id','=',$course->id)
                     ->first();
 
         if($tutor != null)
@@ -309,7 +321,7 @@ class ApiCourse extends Controller
         try {
             $newTutor = Tutor::create([
                 'account_id' => $r->account_id,
-                'course_id' => $id,
+                'course_id' => $course->id,
             ]);
 
             return (new ApiResponse)->response(
