@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiCategory as Category;
 use App\Http\Controllers\ApiCourse as Course;
 use App\Http\Controllers\ApiModule as Module;
 use App\Http\Controllers\ApiMaterial as Material;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
@@ -39,6 +40,8 @@ Route::middleware(['apiJWT'])->group(function(){
             Route::put('/category/{categorySlug}/update',[Category::class, 'update']);
             Route::post('/course',[Course::class, 'store']);
             Route::put('/course/{courseSlug}/tutor/register',[Course::class, 'registerTutor']);
+
+            Route::get('/members',[Member::class,'index']);
         });
 
         Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
