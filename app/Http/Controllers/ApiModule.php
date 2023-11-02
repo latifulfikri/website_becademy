@@ -86,7 +86,7 @@ class ApiModule extends Controller
      */
     public function show(request $r)
     {
-        $module = Module::with(['Materials:id,name,module_id'])->where('slug',$r->route('moduleSlug'))->first();
+        $module = Module::with(['Materials:id,slug,name,module_id'])->where('slug',$r->route('moduleSlug'))->first();
 
         if($module == null) {
             return (new ApiResponse)->response(
