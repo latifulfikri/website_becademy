@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiCategory as Category;
 use App\Http\Controllers\ApiCourse as Course;
 use App\Http\Controllers\ApiModule as Module;
 use App\Http\Controllers\ApiMaterial as Material;
-use App\Models\Member;
+use App\Http\Controllers\ApiMember as Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
