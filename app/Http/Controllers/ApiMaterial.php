@@ -96,7 +96,7 @@ class ApiMaterial extends Controller
      */
     public function show(request $r)
     {
-        $material = Material::with('Module')->find($r->route('materialid'));
+        $material = Material::with('Module')->where('slug',$r->route('materialSlug'))->first();
 
         if($material == null) {
             return (new ApiResponse)->response(
