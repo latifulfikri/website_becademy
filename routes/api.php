@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiCategory as Category;
 use App\Http\Controllers\ApiCourse as Course;
 use App\Http\Controllers\ApiModule as Module;
 use App\Http\Controllers\ApiMaterial as Material;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
@@ -32,13 +33,17 @@ Route::get('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'show']);
 
 Route::middleware(['apiJWT'])->group(function(){
     Route::get('logout',[ApiAuth::class, 'logout']);
-    
+
     Route::middleware(['apiVerified'])->group(function(){
         Route::middleware(['apiAdmin'])->group(function(){
             Route::post('/category',[Category::class, 'store']);
             Route::put('/category/{categorySlug}/update',[Category::class, 'update']);
             Route::post('/course',[Course::class, 'store']);
             Route::put('/course/{courseSlug}/tutor/register',[Course::class, 'registerTutor']);
+
+            Route::get('/member',[Member::class,'index']);
+            Route::get('/member/{id}/detail',[Member::class,'show']);
+            Route::put('/member/{id}/verify-payment',[Member::class, 'verifyPayment']);
         });
 
         Route::middleware(['apiVerified','apiCourseAdmin'])->group(function(){
@@ -53,6 +58,7 @@ Route::middleware(['apiJWT'])->group(function(){
         });
 
         Route::put('/course/{courseSlug}/member/register',[Course::class, 'registerMember']);
+        Route::put('/course/{courseSlug}/is-member',[Course::class, 'isMember']);
 
         Route::group(['prefix'=> '/my'], function(){
             Route::get('/course',[Course::class,'myCourse']);
