@@ -50,6 +50,8 @@ Route::middleware(['apiJWT'])->group(function(){
             Route::put('/course/{courseSlug}/update',[Course::class, 'update']);
             Route::post('/course/{courseSlug}/module',[Module::class, 'store']);
             Route::put('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'update']);
+            Route::post('/course/{courseSlug}/module/{moduleSlug}/material',[Material::class, 'store']);
+            Route::put('/course/{courseSlug}/module/{moduleSlug}/material/{materialSlug}',[Material::class, 'update']);
         });
 
         Route::middleware(['apiVerified','apiCourseMember'])->group(function(){
