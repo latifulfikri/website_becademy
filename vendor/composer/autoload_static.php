@@ -555,13 +555,6 @@ class ComposerStaticInit8605bf58c1892c55b1bbf072e68137ff
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
-        'App\\Http\\Controllers\\ApiAuth' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiAuth.php',
-        'App\\Http\\Controllers\\ApiCategory' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiCategory.php',
-        'App\\Http\\Controllers\\ApiCourse' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiCourse.php',
-        'App\\Http\\Controllers\\ApiMaterial' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiMaterial.php',
-        'App\\Http\\Controllers\\ApiModule' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiModule.php',
-        'App\\Http\\Controllers\\ApiResponse' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiResponse.php',
-        'App\\Http\\Controllers\\ApiVerification' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiVerification.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\ApiAdmin' => __DIR__ . '/../..' . '/app/Http/Middleware/ApiAdmin.php',

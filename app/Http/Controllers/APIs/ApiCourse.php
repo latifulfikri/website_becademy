@@ -17,9 +17,10 @@ class ApiCourse extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('Tutors','Members','Modules', 'Category')->get();
+        $courses = Course::with('Tutors', 'Members', 'Modules', 'Category')->get();
+
 
         return (new ApiResponse)->response(
             'Courses data',
@@ -28,10 +29,14 @@ class ApiCourse extends Controller
         );
     }
 
-    public function myCourse(Request $request) {
+    public function myCourse(Request $request)
+    {
+
         $account = Auth::guard('api')->user();
 
+
         $myCourses = Member::with('Course')->where('account_id', $account->id)->get();
+
 
         return (new ApiResponse)->response(
             'Courses data',
@@ -40,11 +45,15 @@ class ApiCourse extends Controller
         );
     }
 
-    public function isMember(Request $request){
-        $user = Auth::guard('api')->user();
-        $course = Course::where('slug','=',$request->route('courseSlug'))->first();
+    public function isMember(Request $request)
+    {
 
-        if($course == null) {
+        $user = Auth::guard('api')->user();
+
+        $course = Course::where('slug', '=', $request->route('courseSlug'))->first();
+
+        if ($course == null) {
+
             return (new ApiResponse)->response(
                 'Course not found',
                 null,
@@ -54,13 +63,15 @@ class ApiCourse extends Controller
 
         $isMember = Member::where('account_id', $user->id)->where('course_id', $course->id)->exists();
 
-        if($isMember) {
+        if ($isMember) {
+
             return (new ApiResponse)->response(
                 'True',
                 ['result' => true],
                 Response::HTTP_OK
             );
-        }else{
+        } else {
+
             return (new ApiResponse)->response(
                 'False',
                 ['result' => false],
@@ -74,7 +85,7 @@ class ApiCourse extends Controller
      */
     public function store(Request $r)
     {
-        $validation = Validator::make($r->all(),[
+        $validation = Validator::make($r->all(), [
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'desc' => 'required',
@@ -84,8 +95,8 @@ class ApiCourse extends Controller
             'min_ram' => 'required|integer|min:4',
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 $validation->errors(),
@@ -97,12 +108,14 @@ class ApiCourse extends Controller
 
         try {
             $course = Course::create($validated);
+
             return (new ApiResponse)->response(
                 'Created',
                 $course,
                 Response::HTTP_CREATED
             );
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,
@@ -116,15 +129,17 @@ class ApiCourse extends Controller
      */
     public function show(Request $r)
     {
-        $course = Course::with('Tutors','Members','Modules','Category')->where('slug','=',$r->route('courseSlug'))->first();
+        $course = Course::with('Tutors', 'Members', 'Modules', 'Category')->where('slug', '=', $r->route('courseSlug'))->first();
 
-        if($course == null) {
+        if ($course == null) {
+
             return (new ApiResponse)->response(
                 'Course not found',
                 null,
                 Response::HTTP_NOT_FOUND
             );
         }
+
 
         return (new ApiResponse)->response(
             'Course data',
@@ -138,9 +153,10 @@ class ApiCourse extends Controller
      */
     public function update(Request $r)
     {
-        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
+        $course = Course::where('slug', '=', $r->route('courseSlug'))->first();
 
-        if($course == null) {
+        if ($course == null) {
+
             return (new ApiResponse)->response(
                 'Course not found',
                 null,
@@ -148,14 +164,14 @@ class ApiCourse extends Controller
             );
         }
 
-        $validation = Validator::make($r->all(),[
+        $validation = Validator::make($r->all(), [
             'category_id' => 'exists:categories,id',
             'min_storage' => 'integer|min:64',
             'min_ram' => 'integer|min:4',
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 $validation->errors(),
@@ -165,43 +181,35 @@ class ApiCourse extends Controller
 
         $validated = [];
 
-        if($r->category_id != null)
-        {
+        if ($r->category_id != null) {
             $validated['category_id'] = $r->category_id;
         }
 
-        if($r->name != null)
-        {
+        if ($r->name != null) {
             $validated['name'] = $r->name;
         }
 
-        if($r->desc != null)
-        {
+        if ($r->desc != null) {
             $validated['desc'] = $r->desc;
         }
 
-        if($r->price != null)
-        {
+        if ($r->price != null) {
             $validated['price'] = $r->price;
         }
 
-        if($r->min_processor != null)
-        {
+        if ($r->min_processor != null) {
             $validated['min_processor'] = $r->min_processor;
         }
 
-        if($r->min_storage != null)
-        {
+        if ($r->min_storage != null) {
             $validated['min_storage'] = $r->min_storage;
         }
 
-        if($r->min_ram != null)
-        {
+        if ($r->min_ram != null) {
             $validated['min_ram'] = $r->min_ram;
         }
 
-        if($r->is_active != null)
-        {
+        if ($r->is_active != null) {
             $validated['is_active'] = $r->is_active;
         }
 
@@ -213,6 +221,7 @@ class ApiCourse extends Controller
                 Response::HTTP_OK
             );
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,
@@ -225,9 +234,10 @@ class ApiCourse extends Controller
     {
         $account = Auth::guard('api')->user();
 
-        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
+        $course = Course::where('slug', '=', $r->route('courseSlug'))->first();
 
-        if($course == null) {
+        if ($course == null) {
+
             return (new ApiResponse)->response(
                 'Course not found',
                 null,
@@ -235,13 +245,13 @@ class ApiCourse extends Controller
             );
         }
 
-        $validation = Validator::make($r->all(),[
+        $validation = Validator::make($r->all(), [
             'payment_method' => 'required|in:bank,ewallet,direct',
             'payment_picture' => 'required|mimes:jpg,jpeg,png',
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 $validation->errors(),
@@ -249,12 +259,12 @@ class ApiCourse extends Controller
             );
         }
 
-        $member = Member::where('account_id','=',$account->id)
-                    ->where('course_id','=',$course->id)
-                    ->first();
+        $member = Member::where('account_id', '=', $account->id)
+            ->where('course_id', '=', $course->id)
+            ->first();
 
-        if($member != null)
-        {
+        if ($member != null) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 [
@@ -266,7 +276,7 @@ class ApiCourse extends Controller
         }
 
         try {
-            if ($path = $r->file('payment_picture')->store('/',['disk' => 'course_payment'])) {
+            if ($path = $r->file('payment_picture')->store('/', ['disk' => 'course_payment'])) {
                 $newMember = Member::create([
                     'account_id' => $account->id,
                     'course_id' => $course->id,
@@ -276,12 +286,14 @@ class ApiCourse extends Controller
 
                 if (!$newMember) {
                     Storage::disk('course_payment')->delete($path);
+
                     return (new ApiResponse)->response(
                         'Internal server error',
                         null,
                         Response::HTTP_INTERNAL_SERVER_ERROR
                     );
                 }
+
 
                 return (new ApiResponse)->response(
                     'Registered',
@@ -291,6 +303,7 @@ class ApiCourse extends Controller
                     Response::HTTP_CREATED
                 );
             } else {
+
                 return (new ApiResponse)->response(
                     'Cannot upload picture',
                     null,
@@ -298,6 +311,7 @@ class ApiCourse extends Controller
                 );
             }
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,
@@ -308,9 +322,10 @@ class ApiCourse extends Controller
 
     public function registerTutor(Request $r)
     {
-        $course = Course::where('slug','=',$r->route('courseSlug'))->first();
+        $course = Course::where('slug', '=', $r->route('courseSlug'))->first();
 
-        if($course == null) {
+        if ($course == null) {
+
             return (new ApiResponse)->response(
                 'Course not found',
                 null,
@@ -318,12 +333,12 @@ class ApiCourse extends Controller
             );
         }
 
-        $validation = Validator::make($r->all(),[
+        $validation = Validator::make($r->all(), [
             'account_id' => 'required|exists:accounts,id',
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 $validation->errors(),
@@ -331,16 +346,16 @@ class ApiCourse extends Controller
             );
         }
 
-        $tutor = Tutor::where('account_id','=',$r->account_id)
-                    ->where('course_id','=',$course->id)
-                    ->first();
+        $tutor = Tutor::where('account_id', '=', $r->account_id)
+            ->where('course_id', '=', $course->id)
+            ->first();
 
-        if($tutor != null)
-        {
+        if ($tutor != null) {
+
             return (new ApiResponse)->response(
                 'Not acceptable',
                 [
-                    'status' => 'That account has been registered in this course',
+                    'status' => 'That account has been registered as tutor in this course',
                     'data' => $tutor
                 ],
                 Response::HTTP_NOT_ACCEPTABLE
@@ -355,10 +370,11 @@ class ApiCourse extends Controller
 
             return (new ApiResponse)->response(
                 'Registered',
-                Tutor::with('Account','Course')->find($newTutor->id),
+                Tutor::with('Account', 'Course')->find($newTutor->id),
                 Response::HTTP_CREATED
             );
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,

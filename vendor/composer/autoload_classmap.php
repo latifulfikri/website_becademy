@@ -8,13 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
-    'App\\Http\\Controllers\\ApiAuth' => $baseDir . '/app/Http/Controllers/ApiAuth.php',
-    'App\\Http\\Controllers\\ApiCategory' => $baseDir . '/app/Http/Controllers/ApiCategory.php',
-    'App\\Http\\Controllers\\ApiCourse' => $baseDir . '/app/Http/Controllers/ApiCourse.php',
-    'App\\Http\\Controllers\\ApiMaterial' => $baseDir . '/app/Http/Controllers/ApiMaterial.php',
-    'App\\Http\\Controllers\\ApiModule' => $baseDir . '/app/Http/Controllers/ApiModule.php',
-    'App\\Http\\Controllers\\ApiResponse' => $baseDir . '/app/Http/Controllers/ApiResponse.php',
-    'App\\Http\\Controllers\\ApiVerification' => $baseDir . '/app/Http/Controllers/ApiVerification.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\ApiAdmin' => $baseDir . '/app/Http/Middleware/ApiAdmin.php',
