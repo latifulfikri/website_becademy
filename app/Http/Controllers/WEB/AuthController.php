@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     public function login(Request $r)
     {
-        $validation = Validator::make($r->All(),[
+        $validation = Validator::make($r->All(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
@@ -30,7 +30,7 @@ class AuthController extends Controller
         if (Auth::attempt($validated)) {
             return redirect('/');
         } else {
-            return redirect('/login')->with(['error'=>'Wrong credential']);
+            return redirect('/login')->with(['error' => 'Wrong credential']);
         }
     }
 
@@ -57,26 +57,26 @@ class AuthController extends Controller
             'school' => 'required',
             'degree' => 'required',
             'field_of_study' => 'required',
-        ],$messages);
+        ], $messages);
 
         $validated = $validation->validated();
         $validated['password'] = bcrypt($r->password);
 
-        if ($path = $r->file('picture')->store('/',['disk' => 'account_picture'])) {
+        if ($path = $r->file('picture')->store('/', ['disk' => 'account_picture'])) {
             $validated['picture'] = $path;
             $newAccount = Account::create($validated);
             if (!$newAccount) {
                 Storage::disk('account_picture')->delete($path);
-                return redirect('/register')->with(['error'=> 'Internal server error']);
+                return redirect('/register')->with(['error' => 'Internal server error']);
             }
             Auth::attempt([
-                'email'=> $validated['email'],
-                'password'=> $validated['password'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
             ]);
             $newAccount->sendEmailVerificationNotification();
-            return view('auth.verificationSent',['email'=>$newAccount->email]);
+            return view('auth.verificationSent', ['email' => $newAccount->email]);
         } else {
-            return redirect('/register')->with(['error'=> 'Cannot upload picture']);
+            return redirect('/register')->with(['error' => 'Cannot upload picture']);
         }
     }
 
@@ -90,5 +90,12 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         dd($user);
+    }
+
+    public function userLoginData(Request $r)
+    {
+        $account = Auth::guard('web')->user();
+
+        return view('...', ['account' => $account])->with('success', 'User login data');
     }
 }
