@@ -52,7 +52,7 @@ class ModuleController extends Controller
             $module = Module::create($validated);
             return view('...',['module'=>$module])->with('success','Module created'); //TODO: isi routenya
         } catch (\Throwable $th) {
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ class ModuleController extends Controller
             $module->update($validated);
             return view('...', ['module'=>$module])->with('success','Module updated'); //TODO: isi routenya
         } catch (\Throwable $th) {
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 

@@ -49,7 +49,7 @@ class MemberController extends Controller
             $member->update($validated);
             return view('...',['member'=> $member])->with('success','Member updated'); //TODO: isi routenya
         } catch (\Throwable $th) {
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 }

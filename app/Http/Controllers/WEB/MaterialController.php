@@ -58,7 +58,7 @@ class MaterialController extends Controller
             $material = Material::create($validated);
             return view('...', ['material'=>$material])->with('success', 'Material created'); //TODO: isi routenya
         } catch (\Throwable $th) {
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 

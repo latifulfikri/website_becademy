@@ -93,7 +93,7 @@ class CourseController extends Controller
 
         } catch (\Throwable $th) {
 
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 
@@ -176,7 +176,7 @@ class CourseController extends Controller
             return view('...', ['course' => $course])->with('success', 'Course updated');
         } catch (\Throwable $th) {
 
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 
@@ -232,7 +232,7 @@ class CourseController extends Controller
             }
         } catch (\Throwable $th) {
 
-            return back()->with('Internal server error', $th->getMessage());
+            return back()->with('error', $th->getMessage());
         }
     }
 
@@ -272,7 +272,7 @@ class CourseController extends Controller
             $tutorID = Tutor::with('Account', 'Course')->find($newTutor->id);
             return view('...', ['tutorID' => $tutorID])->with('success', 'Tutor registered'); //TODO: isi routenya
         } catch (\Throwable $th) {
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
     /**

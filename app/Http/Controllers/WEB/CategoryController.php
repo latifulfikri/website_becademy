@@ -44,7 +44,7 @@ class CategoryController extends Controller
 
         } catch (\Throwable $th) {
 
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ class CategoryController extends Controller
 
         } catch (\Throwable $th) {
 
-            return back()->with('error', 'Internal server error');
+            return back()->with('error', $th->getMessage());
         }
     }
 
