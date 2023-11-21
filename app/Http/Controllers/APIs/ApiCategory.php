@@ -12,9 +12,10 @@ class ApiCategory extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $category = Category::get();
+
         return (new ApiResponse)->response(
             'Category data',
             $category,
@@ -27,14 +28,13 @@ class ApiCategory extends Controller
      */
     public function store(Request $r)
     {
-        $validation = Validator::make($r->all(),[
+        $validation = Validator::make($r->all(), [
             'name' => 'required',
             'icon' => 'required',
             'color' => 'required'
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
             return (new ApiResponse)->response(
                 'Not acceptable',
                 $validation->errors(),
@@ -46,12 +46,14 @@ class ApiCategory extends Controller
 
         try {
             $category = Category::create($validated);
+
             return (new ApiResponse)->response(
                 'Created',
                 $category,
                 Response::HTTP_CREATED
             );
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,
@@ -65,15 +67,17 @@ class ApiCategory extends Controller
      */
     public function show(Request $r)
     {
-        $category = Category::where('slug','=',$r->route('categorySlug'))->first();
+        $category = Category::where('slug', '=', $r->route('categorySlug'))->first();
 
-        if($category == null) {
+        if ($category == null) {
+
             return (new ApiResponse)->response(
                 'Category not found',
                 null,
                 Response::HTTP_NOT_FOUND
             );
         }
+
 
         return (new ApiResponse)->response(
             'Category data',
@@ -87,9 +91,10 @@ class ApiCategory extends Controller
      */
     public function update(Request $r)
     {
-        $category = Category::where('slug','=',$r->route('categorySlug'))->first();
+        $category = Category::where('slug', '=', $r->route('categorySlug'))->first();
 
-        if($category == null) {
+        if ($category == null) {
+
             return (new ApiResponse)->response(
                 'Category not found',
                 null,
@@ -99,29 +104,28 @@ class ApiCategory extends Controller
 
         $validated = [];
 
-        if($r->name != null)
-        {
+        if ($r->name != null) {
             $validated['name'] = $r->name;
         }
-        
-        if($r->icon != null)
-        {
+
+        if ($r->icon != null) {
             $validated['icon'] = $r->icon;
         }
 
-        if($r->color != null)
-        {
+        if ($r->color != null) {
             $validated['color'] = $r->color;
         }
 
         try {
             $category->update($validated);
+
             return (new ApiResponse)->response(
                 'Updated',
                 $category,
                 Response::HTTP_OK
             );
         } catch (\Throwable $th) {
+
             return (new ApiResponse)->response(
                 'Internal server error',
                 $th,

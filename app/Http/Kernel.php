@@ -69,5 +69,10 @@ class Kernel extends HttpKernel
         'apiVerified' => \App\Http\Middleware\ApiVerified::class,
         'apiCourseAdmin' => \App\Http\Middleware\ApiCourseAdmin::class,
         'apiCourseMember' => \App\Http\Middleware\ApiCourseMember::class,
+        'Admin' => \App\Http\Middleware\Admin::class,
+        'JWT' => \App\Http\Middleware\JWT::class,
+        'Verified' => \App\Http\Middleware\Verified::class,
+        'CourseAdmin' => \App\Http\Middleware\CourseAdmin::class,
+        'CourseMember' => \App\Http\Middleware\CourseMember::class,
     ];
 }
