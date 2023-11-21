@@ -47,7 +47,7 @@ class MemberController extends Controller
 
         try {
             $member->update($validated);
-            return view('...',['member'=> $member])->with('success','Member updated'); //TODO: isi routenya
+            return redirect()->route('...')->with('success','Member updated'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

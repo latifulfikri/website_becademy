@@ -40,7 +40,7 @@ class CategoryController extends Controller
         try {
             $category = Category::create($validated);
 
-            return view('...', ['category' => $category])->with('success', 'Category created'); //TODO: isi routenya
+            return redirect()->route('...')->with('success', 'Category created'); //TODO: isi routenya
 
         } catch (\Throwable $th) {
 
@@ -94,7 +94,7 @@ class CategoryController extends Controller
         try {
             $category->update($validated);
 
-            return view('...',['category'=>$category])->with('success', 'Category updated'); //TODO: isi routenya
+            return redirect()->route('...')->with('success', 'Category updated'); //TODO: isi routenya
 
         } catch (\Throwable $th) {
 

@@ -50,7 +50,7 @@ class ModuleController extends Controller
 
         try {
             $module = Module::create($validated);
-            return view('...',['module'=>$module])->with('success','Module created'); //TODO: isi routenya
+            return redirect()->route('...')->with('success','Module created'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -90,7 +90,7 @@ class ModuleController extends Controller
 
         try {
             $module->update($validated);
-            return view('...', ['module'=>$module])->with('success','Module updated'); //TODO: isi routenya
+            return redirect()->route('...')->with('success','Module updated'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

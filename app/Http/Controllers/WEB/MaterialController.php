@@ -56,7 +56,7 @@ class MaterialController extends Controller
 
         try {
             $material = Material::create($validated);
-            return view('...', ['material'=>$material])->with('success', 'Material created'); //TODO: isi routenya
+            return redirect()->route('...')->with('success', 'Material created'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -120,7 +120,7 @@ class MaterialController extends Controller
 
         try {
             $material->update($validated);
-            return view('...', ['material'=>$material])->with('success','Material updated'); //TODO: isi routenya
+            return redirect()->route('...')->with('success','Material updated'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

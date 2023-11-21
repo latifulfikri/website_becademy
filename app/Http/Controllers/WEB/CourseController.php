@@ -89,7 +89,7 @@ class CourseController extends Controller
         try {
             $course = Course::create($validated);
 
-            return view('...', ['course' => $course])->with('success', 'Course created'); //TODO: isi routenya
+            return redirect()->route('...')->with('success', 'Course created'); //TODO: isi routenya
 
         } catch (\Throwable $th) {
 
@@ -173,7 +173,7 @@ class CourseController extends Controller
 
         try {
             $course->update($validated);
-            return view('...', ['course' => $course])->with('success', 'Course updated');
+            return redirect()->route('...')->with('success', 'Course updated');
         } catch (\Throwable $th) {
 
             return back()->with('error', $th->getMessage());
@@ -270,7 +270,7 @@ class CourseController extends Controller
             ]);
 
             $tutorID = Tutor::with('Account', 'Course')->find($newTutor->id);
-            return view('...', ['tutorID' => $tutorID])->with('success', 'Tutor registered'); //TODO: isi routenya
+            return redirect()->route('...')->with('success', 'Tutor registered'); //TODO: isi routenya
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
