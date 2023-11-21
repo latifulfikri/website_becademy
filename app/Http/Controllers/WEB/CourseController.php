@@ -207,7 +207,7 @@ class CourseController extends Controller
 
         if ($member != null) {
 
-            return view('...', ['member' => $member])->with('error', 'You already registered in this course'); //TODO: isi routenya
+            return redirect()->route('...')->with('error', 'You already registered in this course'); //TODO: isi routenya
         }
 
         try {
