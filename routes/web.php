@@ -20,9 +20,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route buat test tampilan doang
 Route::get('/', function () {
-    return view('welcome');
+    return view('HomePage');
 });
+Route::get('/course/test', function () {
+    return view('CoursePage');
+});
+Route::get('/course/courseSlug/test', function () {
+    return view('CourseDetailPage');
+});
+Route::get('/course/courseSlug/module/moduleSlug/material', function () {
+    return view('MaterialPage');
+});
+//
 
 Route::get('/login',[Auth::class,'index']);
 Route::post('/login/authenticate',[Auth::class,'login']);
