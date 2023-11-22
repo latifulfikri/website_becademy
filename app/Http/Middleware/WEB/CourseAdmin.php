@@ -27,7 +27,7 @@ class CourseAdmin
         $course = Course::where('slug',$request->route('courseSlug'))->first();
 
         if($course == null) {
-            return response()->json([
+            return response()->view('...'[ //TODO: isi routenya
                 'status' => 403,
                 'message' => 'Course not found',
                 'data' => ''
