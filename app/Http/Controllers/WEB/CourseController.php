@@ -22,7 +22,7 @@ class CourseController extends Controller
         $courses = Course::with('Tutors', 'Members', 'Modules', 'Category')->get();
 
 
-        return view('...', ['courses' => $courses]); //TODO: isi return viewnya
+        return view('CourseListPage', ['courses' => $courses]); //TODO: isi return viewnya
 
     }
 
