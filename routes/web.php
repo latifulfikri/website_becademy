@@ -24,14 +24,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('HomePage');
 });
-// Route::get('/course/test', function () {
-//     return view('CoursePage');
-// });
-Route::get('/course/courseSlug/test', function () {
-    return view('CourseDetailPage');
+/*
+Route::get('/course/test', function () {
+    return view('CoursePage'); //ini udh bisa pake route Route::get('/course',[Course::class,'index']);
 });
+Route::get('/course/courseSlug/test', function () {
+    return view('CourseDetailPage'); // ini udh bisa pake Route::get('/course/{courseSlug}',[Course::class,'show']);
+});
+*/
 Route::get('/course/courseSlug/module/moduleSlug/material', function () {
-    return view('MaterialPage');
+    return view('MaterialPage'); // belum bisa kena middleware -> harusnya pake Route::get('/course/{courseSlug}/module/{moduleSlug}/material/{materialSlug}',[Material::class, 'show']);
 });
 //
 
@@ -46,8 +48,8 @@ Route::get('/email/verify/{id}/{hash}', [ApiVerification::class, 'verify'])->nam
 
 Route::get('/category',[Category::class,'index']);
 Route::get('/category/{categorySlug}',[Category::class, 'show']);
-Route::get('/course',[Course::class,'index']);
-Route::get('/course/{courseSlug}',[Course::class,'show']);
+Route::get('/course',[Course::class,'index']); //done
+Route::get('/course/{courseSlug}',[Course::class,'show']); //done
 Route::get('/course/{courseSlug}/module',[Module::class, 'index']);
 Route::get('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'show']);
 

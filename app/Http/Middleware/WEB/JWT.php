@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\WEB;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -30,14 +30,14 @@ class JWT
             $user = JWTAuth::parseToken()->check();
 
             if (!$user) {
-                return response()->view('...',[ //TODO: isi routenya
+                return response()->view('...',[
                     'status' => 403,
                     'message' => 'User not authorized',
                     'data' => 'Login expired'
                 ], 403);
             }
         } catch (JWTException $e) {
-            return response()->view('...',['message' => $e->getMessage()], 500); //TODO: isi routenya
+            return response()->view('...',['message' => $e->getMessage()], 500);
         }
         return $next($request);
     }
