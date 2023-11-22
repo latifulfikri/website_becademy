@@ -93,11 +93,6 @@ class AuthController extends Controller
         dd($user);
     }
 
-    public function __construct()
-     {
-         $this->middleware('auth')->only(['userLoginData']);
-     }
-
     public function userLoginData(Request $r)
     {
         $account = Auth::guard('web')->user();
