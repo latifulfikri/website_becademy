@@ -59,7 +59,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::get('logout',[Auth::class, 'logout']);
 
-    Route::middleware(['authverified'])->group(function(){
+    Route::middleware(['authVerified'])->group(function(){
         Route::middleware(['admin'])->group(function(){
             Route::post('/category',[Category::class, 'store']);
             Route::put('/category/{categorySlug}/update',[Category::class, 'update']);

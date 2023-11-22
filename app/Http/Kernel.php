@@ -72,6 +72,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\WEB\Admin::class,
         'courseAdmin' => \App\Http\Middleware\WEB\CourseAdmin::class,
         'courseMember' => \App\Http\Middleware\WEB\CourseMember::class,
-        'authverified' => \App\Http\Middleware\WEB\Verified::class,
+        'authVerified' => \App\Http\Middleware\WEB\Verified::class,
     ];
 }
