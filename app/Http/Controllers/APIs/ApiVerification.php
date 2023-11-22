@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APIs;
+use App\Http\Controllers\Controller;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class ApiVerification extends Controller
     {
         Auth::loginUsingId($id);
         $user = Account::find($id);
-    
+
         if (! hash_equals($hash,
             sha1($user->password))) {
             return view('auth.verificationFail');
@@ -38,12 +39,12 @@ class ApiVerification extends Controller
         if ($user->hasVerifiedEmail()) {
             return view('auth.verifiedEmail')->with(['email'=>$user->email]);
         }
-    
+
         $user->markEmailAsVerified();
         event(new Verified($user));
-    
+
         Auth::logout();
-    
+
         return view('auth.verifiedEmail')->with(['email'=>$user->email]);
     }
 
@@ -58,7 +59,7 @@ class ApiVerification extends Controller
             }
             $id = Auth::user()->id;
         }
-        
+
         $user = Account::find($id);
 
         if ($user->hasVerifiedEmail()) {

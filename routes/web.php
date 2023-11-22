@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ApiVerification;
-use App\Http\Controllers\AuthController as Auth;
-use App\Http\Controllers\CategoryController as Category;
-use App\Http\Controllers\CourseController as Course;
-use App\Http\Controllers\ModuleController as Module;
-use App\Http\Controllers\MaterialController as Material;
-use App\Http\Controllers\MemberController as Member;
+use App\Http\Controllers\APIs\ApiVerification;
+use App\Http\Controllers\WEB\AuthController as Auth;
+use App\Http\Controllers\WEB\CategoryController as Category;
+use App\Http\Controllers\WEB\CourseController;
+use App\Http\Controllers\WEB\ModuleController as Module;
+use App\Http\Controllers\WEB\MaterialController as Material;
+use App\Http\Controllers\WEB\MemberController as Member;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +24,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('HomePage');
 });
-Route::get('/course/test', function () {
-    return view('CoursePage');
-});
+// Route::get('/course/test', function () {
+//     return view('CoursePage');
+// });
 Route::get('/course/courseSlug/test', function () {
     return view('CourseDetailPage');
 });
@@ -46,8 +46,8 @@ Route::get('/email/verify/{id}/{hash}', [ApiVerification::class, 'verify'])->nam
 
 Route::get('/category',[Category::class,'index']);
 Route::get('/category/{categorySlug}',[Category::class, 'show']);
-Route::get('/course',[Course::class,'index']);
-Route::get('/course/{courseSlug}',[Course::class,'show']);
+Route::get('/course',[CourseController::class,'index']);
+Route::get('/course/{courseSlug}',[CourseController::class,'show']);
 Route::get('/course/{courseSlug}/module',[Module::class, 'index']);
 Route::get('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'show']);
 
@@ -61,8 +61,8 @@ Route::middleware(['web', 'JWT'])->group(function () {
         Route::middleware(['Admin'])->group(function(){
             Route::post('/category',[Category::class, 'store']);
             Route::put('/category/{categorySlug}/update',[Category::class, 'update']);
-            Route::post('/course',[Course::class, 'store']);
-            Route::put('/course/{courseSlug}/tutor/register',[Course::class, 'registerTutor']);
+            Route::post('/course',[CourseController::class, 'store']);
+            Route::put('/course/{courseSlug}/tutor/register',[CourseController::class, 'registerTutor']);
 
             Route::get('/member',[Member::class,'index']);
             Route::get('/member/{id}/detail',[Member::class,'show']);
@@ -70,7 +70,7 @@ Route::middleware(['web', 'JWT'])->group(function () {
         });
 
         Route::middleware(['CourseAdmin'])->group(function(){
-            Route::put('/course/{courseSlug}/update',[Course::class, 'update']);
+            Route::put('/course/{courseSlug}/update',[CourseController::class, 'update']);
             Route::post('/course/{courseSlug}/module',[Module::class, 'store']);
             Route::put('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'update']);
             Route::post('/course/{courseSlug}/module/{moduleSlug}/material',[Material::class, 'store']);
@@ -82,11 +82,11 @@ Route::middleware(['web', 'JWT'])->group(function () {
             Route::get('/course/{courseSlug}/module/{moduleSlug}/material/{materialSlug}',[Material::class, 'show']);
         });
 
-        Route::put('/course/{courseSlug}/member/register',[Course::class, 'registerMember']);
-        Route::put('/course/{courseSlug}/is-member',[Course::class, 'isMember']);
+        Route::put('/course/{courseSlug}/member/register',[CourseController::class, 'registerMember']);
+        Route::put('/course/{courseSlug}/is-member',[CourseController::class, 'isMember']);
 
         Route::group(['prefix'=> '/my'], function(){
-            Route::get('/course',[Course::class,'myCourse']);
+            Route::get('/course',[CourseController::class,'myCourse']);
             Route::get('/data',[Auth::class,'userLoginData']);
         });
     });

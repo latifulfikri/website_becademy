@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\WEB;
+use App\Http\Controllers\Controller;
 
 use App\Models\Account;
 use App\Models\Course;
@@ -17,12 +18,12 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $courses = Course::with('Tutors', 'Members', 'Modules', 'Category')->get();
 
 
-        return view('CourseListPage', ['courses' => $courses]); //TODO: isi return viewnya
+        return view('CoursePage', ['courses' => $courses]); //TODO: isi return viewnya
 
     }
 

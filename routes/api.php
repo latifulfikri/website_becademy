@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ApiAuth;
-use App\Http\Controllers\ApiVerification;
-use App\Http\Controllers\ApiCategory as Category;
-use App\Http\Controllers\ApiCourse as Course;
-use App\Http\Controllers\ApiModule as Module;
-use App\Http\Controllers\ApiMaterial as Material;
-use App\Http\Controllers\ApiMember as Member;
+use App\Http\Controllers\APIs\ApiAuth;
+use App\Http\Controllers\APIs\ApiVerification;
+use App\Http\Controllers\APIs\ApiCategory as Category;
+use App\Http\Controllers\APIs\ApiCourse as Course;
+use App\Http\Controllers\APIs\ApiModule as Module;
+use App\Http\Controllers\APIs\ApiMaterial as Material;
+use App\Http\Controllers\APIs\ApiMember as Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
