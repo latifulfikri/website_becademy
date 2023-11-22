@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\APIs;
 
 use App\Models\Course;
 use App\Models\Member;

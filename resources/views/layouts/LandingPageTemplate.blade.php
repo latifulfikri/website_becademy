@@ -33,10 +33,29 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
                     <a class="nav-link mx-3" href="/">Beranda</a>
-                    <a class="nav-link mx-3" href="#">Kelas</a>
+                    <a class="nav-link mx-3" href="/course">Kelas</a>
                     <a class="nav-link mx-3" href="#">Hubungi Kami</a>
                 </div>
-                <button type="button" class="btn button-primary px-3 py-2">Mulai Belajar</button>
+                @auth
+                    <div class="dropdown">
+                        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="account-img w-100">
+                                <img src="{{ asset('account/img/inGvRMqkqQXkTlJzxyGVCAuVuciZg2a26AE2qRpg.jpg') }}"
+                                    alt="tutor-profile" class="img-fluid">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">My Class</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                @else
+                    <a type="button" class="btn button-primary px-3 py-2" href="/login">Mulai Belajar</a>
+                @endauth
             </div>
         </div>
     </nav>

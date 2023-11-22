@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\APIs;
 
 use App\Models\Course;
 use App\Models\Tutor;
@@ -25,7 +25,7 @@ class ApiCourseAdmin
         }
 
         $course = Course::where('slug',$request->route('courseSlug'))->first();
-        
+
         if($course == null) {
             return response()->json([
                 'status' => 403,

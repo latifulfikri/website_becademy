@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\Member;
 use App\Models\Tutor;
@@ -21,9 +22,10 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::with('Tutors', 'Members', 'Modules', 'Category')->get();
+        $categories = Category::get();
 
 
-        return view('CoursePage', ['courses' => $courses]); //TODO: isi return viewnya
+        return view('CoursePage', ['courses' => $courses, 'categories' => $categories]);
 
     }
 
@@ -111,7 +113,7 @@ class CourseController extends Controller
         }
 
 
-        return view('...', ['course' => $course]); //TODO: isi viewnya
+        return view('CourseDetailPage', ['course' => $course]);
 
     }
 

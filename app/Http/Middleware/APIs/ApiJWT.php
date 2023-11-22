@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\APIs;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class ApiJWT
             }
 
             $user = JWTAuth::parseToken()->check();
-            
+
             if (!$user) {
                 return response()->json([
                     'status' => 403,
