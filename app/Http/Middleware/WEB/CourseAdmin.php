@@ -27,7 +27,7 @@ class CourseAdmin
         $course = Course::where('slug',$request->route('courseSlug'))->first();
 
         if($course == null) {
-            return response()->view('...', [ //TODO: isi routenya
+            return response()->json([
                 'status' => 403,
                 'message' => 'Course not found',
                 'data' => ''
@@ -39,7 +39,7 @@ class CourseAdmin
 
         if($tutor->count() <= 0)
         {
-            return response()->view('...', [ //TODO: isi routenya
+            return response()->view('...',[ //TODO: isi routenya
                 'status' => 403,
                 'message' => 'User not in course admin',
                 'data' => 'Please use admin credential or contact developer'

@@ -47,7 +47,7 @@ class CourseMember
 
         if($member == null || $member == [])
         {
-            return response()->view('...', [ //TODO: isi routenya
+            return response()->view('...',[ //TODO: isi routenya
                 'status' => 403,
                 'message' => 'User not in course member',
                 'data' => 'Please register as a member in course'
@@ -55,7 +55,7 @@ class CourseMember
         }
 
         if ($member->payment_verified != "Success") {
-            return response()->view('...', [ //TODO: isi routenya
+            return response()->view('...',[ //TODO: isi routenya
                 'status' => 403,
                 'message' => 'Cannot access due payment status',
                 'data' => [

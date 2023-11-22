@@ -13,6 +13,13 @@ class MaterialController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+     {
+         $this->middleware('admin');
+         $this->middleware('auth')->only(['index']);
+         $this->middleware('courseAdmin')->only(['store', 'update']);
+         $this->middleware('courseMember')->only(['index', 'show']);
+     }
     public function index(request $r)
     {
         $module = Module::where('slug',$r->route('moduleSlug'))->first();

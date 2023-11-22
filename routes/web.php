@@ -53,14 +53,14 @@ Route::get('/course/{courseSlug}',[Course::class,'show']); //done
 Route::get('/course/{courseSlug}/module',[Module::class, 'index']);
 Route::get('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'show']);
 
-Route::middleware(['web', 'JWT'])->group(function () {
+Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/email/verify', [ApiVerification::class, 'notice'])->name('verification.notice');
     Route::get('/email/verify/resend', [ApiVerification::class, 'send'])->name('verification.send');
 
     Route::get('logout',[Auth::class, 'logout']);
 
-    Route::middleware(['Verified'])->group(function(){
-        Route::middleware(['Admin'])->group(function(){
+    Route::middleware(['authverified'])->group(function(){
+        Route::middleware(['admin'])->group(function(){
             Route::post('/category',[Category::class, 'store']);
             Route::put('/category/{categorySlug}/update',[Category::class, 'update']);
             Route::post('/course',[Course::class, 'store']);
@@ -71,7 +71,7 @@ Route::middleware(['web', 'JWT'])->group(function () {
             Route::put('/member/{id}/verify-payment',[Member::class, 'verifyPayment']);
         });
 
-        Route::middleware(['CourseAdmin'])->group(function(){
+        Route::middleware(['courseAdmin'])->group(function(){
             Route::put('/course/{courseSlug}/update',[Course::class, 'update']);
             Route::post('/course/{courseSlug}/module',[Module::class, 'store']);
             Route::put('/course/{courseSlug}/module/{moduleSlug}',[Module::class, 'update']);
@@ -79,7 +79,7 @@ Route::middleware(['web', 'JWT'])->group(function () {
             Route::put('/course/{courseSlug}/module/{moduleSlug}/material/{materialSlug}',[Material::class, 'update']);
         });
 
-        Route::middleware(['CourseMember'])->group(function(){
+        Route::middleware(['courseMember'])->group(function(){
             Route::get('/course/{courseSlug}/module/{moduleSlug}/material',[Material::class, 'index']);
             Route::get('/course/{courseSlug}/module/{moduleSlug}/material/{materialSlug}',[Material::class, 'show']);
         });
